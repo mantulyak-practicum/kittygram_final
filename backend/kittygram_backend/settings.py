@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['kittygram.0577.ru',]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
