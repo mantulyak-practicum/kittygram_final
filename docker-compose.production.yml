@@ -11,14 +11,27 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     image: mantuliak/kittygram_backend
     env_file: .env
     volumes:
       - static:/backend_static
       - media:/app/media
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
   frontend:
     image: mantuliak/kittygram_frontend 
     command: cp -r /app/build/. /static/
@@ -32,4 +45,5 @@ services:
       - static:/static
       - media:/media
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
