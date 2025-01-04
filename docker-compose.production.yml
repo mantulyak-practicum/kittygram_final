@@ -1,13 +1,5 @@
 version: '3'
 
-x-pg_envs: &pg_envs
-  - POSTGRES_USER=${POSTGRES_USER}
-  - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  - POSTGRES_DB=${POSTGRES_DB}
-  - POSTGRES_HOST=${POSTGRES_HOST}
-  - POSTGRES_PORT=${POSTGRES_PORT}
-  - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-
 volumes:
   pg_data:
   static:
@@ -15,12 +7,12 @@ volumes:
 services:
   db:
     image: postgres:13
-    environment: *pg_envs
+    env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
     image: mantuliak/kittygram_backend
-    environment: *pg_envs
+    env_file: .env
     volumes:
       - static:/backend_static
   frontend:
