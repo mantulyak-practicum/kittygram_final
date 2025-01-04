@@ -3,6 +3,7 @@ version: '3'
 volumes:
   pg_data:
   static:
+  media:
 
 services:
   db:
@@ -15,6 +16,7 @@ services:
     env_file: .env
     volumes:
       - static:/backend_static
+      - media:/media
     depends_on:
       - db
   frontend:
@@ -22,6 +24,7 @@ services:
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
+      - media:/media
   gateway:
     image: mantuliak/kittygram_gateway 
     ports:
