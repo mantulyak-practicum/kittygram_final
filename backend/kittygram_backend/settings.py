@@ -1,5 +1,4 @@
 # flake8: noqa
-import ast
 from dotenv import load_dotenv
 import os
 from pathlib import Path
@@ -12,7 +11,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'some-secret-key')
 
 DEBUG = bool(os.getenv('DEBUG'))
 
-ALLOWED_HOSTS = ast.literal_eval(os.getenv('ALLOWED_HOSTS', "['localhost']"))
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split()
 
 INSTALLED_APPS = [
     'django.contrib.admin',

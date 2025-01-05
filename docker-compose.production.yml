@@ -38,7 +38,6 @@ services:
 
   frontend:
     image: mantuliak/kittygram_frontend 
-    command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
