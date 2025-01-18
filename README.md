@@ -1,26 +1,28 @@
-#  Как работать с репозиторием финального задания
+# Kittygram
 
-## Что нужно сделать
+Kittygram — это веб-приложение, позволяющее пользователям создавать, просматривать и управлять профилями своих домашних питомцев. Оно разработано с использованием Django и предоставляет функциональность API для взаимодействия с данными.
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+## Основные возможности
 
-## Как проверить работу с помощью автотестов
+- **Регистрация и аутентификация пользователей**
+- **Создание и управление профилями питомцев**
+- **Просмотр профилей других пользователей**
+- **API для взаимодействия с данными (REST API)**
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+## Запуск с помощью docker compose
+
+### 1. Убедитесь, что на вашем компьютере установлен Docker
+
+Для установки воспользуйтесь официальной документацией для [Linux](https://docs.docker.com/engine/install/), [Mac](https://docs.docker.com/desktop/setup/install/mac-install/) или [Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
+
+### 2. Запуск приложения в docker
+Необходимо скачать файл [docker-compose.production.yml](https://github.com/mantulyak-practicum/kittygram_final/blob/main/docker-compose.production.yml) и создать файл с переменными `.env` на основе [образца](https://github.com/mantulyak-practicum/kittygram_final/blob/main/.env.example)\
+После этого надо запустить приложение, выполнить миграции и скопировать статику в нужное расположение:
+
+```bash
+sudo docker compose -f docker-compose.production.yml up -d
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
 ```
-
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
-
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
-
-## Чек-лист для проверки перед отправкой задания
-
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+Kittygram будет доступен по адресу http://127.0.0.1:9000/
